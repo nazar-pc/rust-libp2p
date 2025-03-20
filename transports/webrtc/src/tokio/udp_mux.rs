@@ -213,7 +213,7 @@ impl UDPMuxNewAddr {
             }
 
             // => Register a new connection
-            if let Poll::Ready(Some(((conn, addr), response))) =
+            while let Poll::Ready(Some(((conn, addr), response))) =
                 self.registration_command.poll_next_unpin(cx)
             {
                 let key = conn.key();
