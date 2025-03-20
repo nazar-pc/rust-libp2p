@@ -3,8 +3,8 @@ name: Continuous integration
 on:
   pull_request:
   push:
-    branches:
-      - master
+#    branches:
+#      - master
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -19,9 +19,9 @@ jobs:
     name: Test ${{ matrix.crate }}
     runs-on: ${{ fromJSON(
       github.repository == 'libp2p/rust-libp2p' && (
-        (contains(fromJSON('["libp2p-webrtc", "libp2p"]'), matrix.crate) && '["self-hosted", "linux", "x64", "2xlarge"]') ||
-        (contains(fromJSON('["libp2p-quic", "libp2p-perf"]'), matrix.crate) && '["self-hosted", "linux", "x64", "xlarge"]') ||
-        '["self-hosted", "linux", "x64", "large"]'
+      (contains(fromJSON('["libp2p-webrtc", "libp2p"]'), matrix.crate) && '["self-hosted", "linux", "x64", "2xlarge"]') ||
+      (contains(fromJSON('["libp2p-quic", "libp2p-perf"]'), matrix.crate) && '["self-hosted", "linux", "x64", "xlarge"]') ||
+      '["self-hosted", "linux", "x64", "large"]'
       ) || '"ubuntu-latest"') }}
     timeout-minutes: 10
     needs: gather_published_crates
@@ -381,10 +381,10 @@ jobs:
 
       - name: Ensure generated files are unmodified # https://stackoverflow.com/a/5737794
         run: |
-            git_status=$(git status --porcelain)
-
-            echo $git_status
-            test -z "$git_status"
+          git_status=$(git status --porcelain)
+          
+          echo $git_status
+          test -z "$git_status"
 
   ensure-lockfile-uptodate:
     name: Ensure that `Cargo.lock` is up-to-date
@@ -397,7 +397,7 @@ jobs:
   cargo-deny:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: EmbarkStudios/cargo-deny-action@v2
-      with:
-        command: check advisories bans licenses sources
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check advisories bans licenses sources
